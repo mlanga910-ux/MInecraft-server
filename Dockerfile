@@ -11,4 +11,5 @@ COPY eula.txt /server/eula.txt
 COPY mods /server/mods
 
 EXPOSE 25565
-CMD ["java", "-Xmx4G", "-Xms2G", "-jar", "run.sh"]
+ENTRYPOINT ["bash", "run.sh"]
+
