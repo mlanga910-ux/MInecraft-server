@@ -1,0 +1,33 @@
+name: Minecraft Forge Server
+
+on:
+  workflow_dispatch:
+
+jobs:
+  run-server:
+    runs-on: ubuntu-latest
+    timeout-minutes: 360
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup ngrok
+        run: |
+          curl -s https://ngrok-agent.s3.amazonaws.com/ngrok.asc | sudo tee /etc/apt/trusted.gpg.d/ngrok.asc > /dev/null
+          echo "deb https://ngrok-agent.s3.amazonaws.com buster main" | sudo tee /etc/apt/sources.list.d/ngrok.list
+          sudo apt update && sudo apt install -y ngrok
+
+      - name: Start ngrok tunnel
+        env:
+          NGROK_AUTHTOKEN: ${{ secrets.NGROK_AUTH }}
+        run: |
+          nohup ngrok tcp 25565 --region eu > ngrok.log &
+          sleep 5
+          grep -o "tcp://.*" ngrok.log > ngrok_url.txt
+          echo "Your Minecraft server address:"
+          cat ngrok_url.txt
+
+      - name: Build and run Docker container
+        run: |
+          docker build -t forge-server .
+          docker run -p 25565:25565 forge-server
