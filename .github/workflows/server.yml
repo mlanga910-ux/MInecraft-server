@@ -6,7 +6,7 @@ on:
 jobs:
   run-server:
     runs-on: ubuntu-latest
-    timeout-minutes: 360
+    timeout-minutes: 360  # max 6 hodín
 
     steps:
       - name: Checkout repository
@@ -19,9 +19,15 @@ jobs:
 
       - name: Start Playit.gg agent
         run: |
-          nohup ./playit run &
+          nohup ./playit &
           sleep 5
           ./playit tunnels list
+
+      - name: Build and run Forge server
+        run: |
+          docker build -t forge-server .
+          docker run -p 25565:25565 forge-server
+
 
       - name: Build and run Forge server
         run: |
