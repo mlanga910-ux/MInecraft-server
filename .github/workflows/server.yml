@@ -1,0 +1,24 @@
+name: Minecraft Forge Server (Playit.gg)
+
+on:
+  workflow_dispatch:
+
+jobs:
+  run-server:
+    runs-on: ubuntu-latest
+    timeout-minutes: 360  # max 6 hodín
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Download and start Playit tunnel
+        run: |
+          curl -L https://github.com/playit-cloud/playit-agent/releases/latest/download/playit-linux-amd64 -o playit
+          chmod +x playit
+          nohup ./playit &
+
+      - name: Build Forge server
+        run: |
+          docker build -t forge-server .
+          docker run -p 25565:25565 forge-server
