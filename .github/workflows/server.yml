@@ -7,6 +7,10 @@ jobs:
   run-server:
     runs-on: ubuntu-latest
     timeout-minutes: 360  # max 6 hodín
+- name: Start Playit agent
+  run: |
+    ./playit daemon start
+    ./playit tunnel list
 
     steps:
       - name: Checkout repository
@@ -22,7 +26,3 @@ jobs:
         run: |
           docker build -t forge-server .
           docker run -p 25565:25565 forge-server
-- name: Start Playit agent
-  run: |
-    ./playit daemon start
-    ./playit tunnel list
