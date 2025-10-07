@@ -12,17 +12,21 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Download and start Playit tunnel
+      - name: Download Playit.gg agent
         run: |
           curl -L https://github.com/playit-cloud/playit-agent/releases/latest/download/playit-linux-amd64 -o playit
           chmod +x playit
-          nohup ./playit &
+
       - name: Start Playit.gg agent
-  run: |
-    chmod +x playit
-    nohup ./playit daemon start &
-    sleep 5
-    ./playit tunnel list
+        run: |
+          nohup ./playit daemon start &
+          sleep 5
+          ./playit tunnel list
+
+      - name: Build and run Forge server
+        run: |
+          docker build -t forge-server .
+          docker run -p 25565:25565 forge-server
 
       - name: Build Forge server
         run: |
