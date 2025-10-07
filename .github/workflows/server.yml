@@ -21,4 +21,8 @@ jobs:
       - name: Build Forge server
         run: |
           docker build -t forge-server .
-          docker run -p 25565:25565 forge-server
+          docker run -p 25565:25565 forge-server 
+      - name: Start Playit agent
+  run: |
+    ./playit daemon start
+    ./playit tunnel list
