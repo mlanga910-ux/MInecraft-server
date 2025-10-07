@@ -17,6 +17,12 @@ jobs:
           curl -L https://github.com/playit-cloud/playit-agent/releases/latest/download/playit-linux-amd64 -o playit
           chmod +x playit
           nohup ./playit &
+      - name: Start Playit.gg agent
+  run: |
+    chmod +x playit
+    nohup ./playit daemon start &
+    sleep 5
+    ./playit tunnel list
 
       - name: Build Forge server
         run: |
