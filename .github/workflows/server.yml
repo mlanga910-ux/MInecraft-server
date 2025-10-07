@@ -7,10 +7,6 @@ jobs:
   run-server:
     runs-on: ubuntu-latest
     timeout-minutes: 360  # max 6 hodín
-- name: Start Playit agent
-  run: |
-    ./playit daemon start
-    ./playit tunnel list
 
     steps:
       - name: Checkout repository
