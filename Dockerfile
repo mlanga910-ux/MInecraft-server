@@ -6,6 +6,7 @@ RUN apt-get update && apt-get install -y wget unzip
 RUN wget -O forge-installer.jar https://maven.minecraftforge.net/net/minecraftforge/forge/1.20.1-47.3.0/forge-1.20.1-47.3.0-installer.jar
 RUN java -jar forge-installer.jar --installServer
 RUN rm forge-installer.jar
+RUN chmod +x run.sh
 
 COPY eula.txt /server/eula.txt
 COPY mods /server/mods
